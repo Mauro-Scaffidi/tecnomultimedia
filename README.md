@@ -1,1 +1,1 @@
-
+Sinopsis: Mi aventura grafica se basa en Batman. La historia habla de una persecución y conflicto que ocurre a partir del robo de un banco por parte del Joker. En la aventura Batman tendrá que tomar ciertas decisiones para poder atraparlo y así poder ganar.
