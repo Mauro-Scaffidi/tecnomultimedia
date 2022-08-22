@@ -1,22 +1,22 @@
-class Personaje extends FCircle {
-
+class Personaje extends FCircle{
+  
   boolean unPress, upPress, derPress, izqPress;
   float velocidad;
-
-  Personaje( float x_) {
+  
+  Personaje( float x_){
     super( x_ );
     setDensity(10);
   }
-
-  void inicializar( float x_, float y_ ) {    
-
+  
+  void inicializar( float x_, float y_ ){    
+    
     velocidad = 500;
-
+    
     unPress = false;
     upPress = false;
     derPress = false;
     izqPress = false;
-
+    
     setName( "Personaje" );
     setPosition( x_, y_ );
     //setDamping(1);
@@ -24,23 +24,27 @@ class Personaje extends FCircle {
     //setFriction(0);
     setRotatable(false);
   }
-
-  void actualizar() {
-    if ( upPress ) {
+  
+  void actualizar(){
+    if( upPress ){
       setVelocity( getVelocityX(), -velocidad );
     }
-    if ( unPress ) {
+    if( unPress ){
       setVelocity( getVelocityX(), velocidad );
     }
-    if ( derPress ) {
+    if( derPress ){
       setVelocity( velocidad, getVelocityY() );
     }
-    if ( izqPress ) {
+    if( izqPress ){
       setVelocity( -velocidad, getVelocityY() );
     }
-
-    if ( !upPress && !unPress && !derPress && !izqPress  ) {
+    
+    if( !upPress && !unPress && !derPress && !izqPress  ){
       setVelocity( 0, 0 );
     }
+    
   }
+  
+  
+
 }
