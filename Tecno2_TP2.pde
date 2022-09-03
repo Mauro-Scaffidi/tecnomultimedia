@@ -29,7 +29,7 @@ Villano p2;
 Arcos a1, a2;
 String estado = "inicio";
 boolean goal = false;
-int tiempoGol = 300;
+int tiempoGol = 120;
 boolean tiempoGola = false;
 boolean enFestejo = false;
 int gol, gol1;
@@ -56,7 +56,7 @@ void setup() {
   arbitro = minim.loadFile("Arbitro.mp3");
   pase = minim.loadSample("Pase pelota10.mp3");
   hinchada = minim.loadFile("ambiente.mp3");
-  golSound = minim.loadFile("gol.mp3");
+  golSound = minim.loadFile("gol 2.mp3");
 
   menu= loadImage("Menu.jpg");
   pelota= loadImage("Pelota tejo.png");
@@ -111,12 +111,12 @@ void setup() {
   mundo.add( p2 );
 
   a1 = new Arcos( 10, 150 );
-  a1.inicializar( 10, height/2, 255, 0, 0 );
+  a1.inicializar( 10, height/2, 0, 0, 255);
   a1.setName("arco1");
   mundo.add( a1 );
 
   a2 = new Arcos( 10, 150 );
-  a2.inicializar( width-10, height/2, 0, 0, 255 );
+  a2.inicializar( width-10, height/2, 255, 0, 0 );
   a2.setName("arco2");
   mundo.add( a2 );
 
@@ -169,6 +169,10 @@ void draw() {
     if (!hinchada.isPlaying()) {
       hinchada.rewind();
       hinchada.play();
+    }
+    
+    if(!golSound.isPlaying()){
+      golSound.rewind();
     }
 
     if ( frameCount % 120 == 0 ) {
@@ -339,7 +343,7 @@ void draw() {
     if ( tiempoGol == 0 ) {
       estado = "gol";
       goal = true;
-      tiempoGol = 50;
+      tiempoGol = 120;
       tiempoGola = false;
     }
 
@@ -364,7 +368,7 @@ void draw() {
   // -------------------------------------------------------------------------------
   //ESTADO FIN
 
-  if ( estado.equals("fin 1") ) {
+  if ( estado.equals("fin 2") ) {
     background( 0 );
     image(rojo, 0, 0);
     gol = 0;
@@ -376,7 +380,7 @@ void draw() {
     p2.inicializar(width-100, height/2);
     hinchada.pause();
 
-    if ( key == 'r' && estado.equals("fin 1") ) {
+    if ( key == 'r' && estado.equals("fin 2") ) {
       estado = "inicio";
       tiempoGol = 50;
       tiempoGola = false;
@@ -386,7 +390,7 @@ void draw() {
     }
   }
   
-    if ( estado.equals("fin 2") ) {
+    if ( estado.equals("fin 1") ) {
     background( 0 );
     image(azul, 0, 0);
     gol = 0;
@@ -398,7 +402,7 @@ void draw() {
     p2.inicializar(width-100, height/2);
     hinchada.pause();
 
-    if ( key == 'r' && estado.equals("fin 2") ) {
+    if ( key == 'r' && estado.equals("fin 1") ) {
       estado = "inicio";
       tiempoGol = 50;
       tiempoGola = false;
