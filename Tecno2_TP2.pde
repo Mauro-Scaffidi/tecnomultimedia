@@ -14,7 +14,7 @@ int cuadradrosTamWidth = 50;
 int cuadradrosTamHeight = 50;
 
 Minim minim;
-AudioPlayer arbitro, hinchada, golSound;
+AudioPlayer arbitro, hinchada, golSound, poder;
 AudioSample pase;
 
 float timerObs = 400;
@@ -33,7 +33,7 @@ int tiempoGol = 120;
 boolean tiempoGola = false;
 boolean enFestejo = false;
 int gol, gol1;
-PImage pelota, festejo, menu, rojo, azul;
+PImage pelota, festejo, menu, rojo, azul, multiplicador, defensas, pelotainv;
 PFont fuente;
 
 boolean obs = false;
@@ -57,6 +57,7 @@ void setup() {
   pase = minim.loadSample("Pase pelota10.mp3");
   hinchada = minim.loadFile("ambiente.mp3");
   golSound = minim.loadFile("gol 2.mp3");
+  poder = minim.loadFile("poderes.mp3");
 
   menu= loadImage("Menu.jpg");
   pelota= loadImage("Pelota tejo.png");
@@ -64,6 +65,9 @@ void setup() {
   fuente= loadFont("Evogria-48.vlw");
   rojo= loadImage("Gana rojo.png");
   azul= loadImage("Gana azul.png");
+  multiplicador= loadImage("poderes.png");
+  defensas= loadImage("defensas.png");
+  pelotainv= loadImage("Invisible.png");
   textFont(fuente);
 
   gol = 0;
@@ -74,7 +78,8 @@ void setup() {
   mundo.setGravity(0, 0);
 
   cuadradoBarras = new FBox(cuadradrosTamWidth, cuadradrosTamHeight);
-  cuadradoBarras.setFill(0, 200, 0);
+  cuadradoBarras.attachImage(defensas);
+  //cuadradoBarras.setFill(200, 0, 0);
   cuadradoBarras.setName("boxBarras");
   cuadradoBarras.setNoStroke();
   cuadradoBarras.setSensor(true);
@@ -82,7 +87,8 @@ void setup() {
   mundo.add(cuadradoBarras);
 
   cuadradoMulti = new FBox(cuadradrosTamWidth, cuadradrosTamHeight);
-  cuadradoMulti.setFill(0, 255, 0);
+  cuadradoMulti.attachImage(multiplicador);
+  //cuadradoMulti.setFill(0, 200, 0);
   cuadradoMulti.setName("boxMulti");
   cuadradoMulti.setNoStroke();
   cuadradoMulti.setSensor(true);
@@ -90,7 +96,8 @@ void setup() {
   mundo.add(cuadradoMulti);
 
   cuadradoInvisible = new FBox(cuadradrosTamWidth, cuadradrosTamHeight);
-  cuadradoInvisible.setFill(0, 150, 0);
+  cuadradoInvisible.attachImage(pelotainv);
+  //cuadradoInvisible.setFill(0, 0, 200);
   cuadradoInvisible.setName("boxInvisible");
   cuadradoInvisible.setNoStroke();
   cuadradoInvisible.setSensor(true);
@@ -197,6 +204,8 @@ void draw() {
 
     if ( obs ) {
       if ( power ) {
+        poder.play();
+        poder.rewind();
         mundo.add( o );
         mundo.add( o1 );
         power = false;
@@ -238,6 +247,8 @@ void draw() {
     if ( tres ) {
 
       if ( power1 ) {
+        poder.play();
+        poder.rewind();
         mundo.add( pow );
         mundo.add( pow1 );
         pow.inicializar( p.getX()+100, p.getY()+100 );
@@ -273,7 +284,8 @@ void draw() {
     if ( invisibilidad ) {
 
       if ( power2 ) {
-
+        poder.play();
+        poder.rewind();
         p.setFill(255, 0);
         pow.setFill(255, 0);
         pow1.setFill(255, 0);
@@ -297,6 +309,7 @@ void draw() {
 
     // -------------------------------------------------------------------------------
 
+     
 
 
     // -------------------------------------------------------------------------------
@@ -434,6 +447,7 @@ void contactStarted( FContact c) {
   if ((f1.getName() == "boxBarras" && f2.getName() == "circulo" || f1.getName() == "circulo" && f2.getName() == "boxBarras" || f1.getName() == "boxBarras" && f2.getName() == "circulo" || f1.getName() == "circulo" && f2.getName() == "boxBarras") && !obs && !power) {
     obs = true;
     power = true;
+    
   }
 
   if ((f1.getName() == "boxMulti" && f2.getName() == "circulo" || f1.getName() == "circulo" && f2.getName() == "boxMulti" || f1.getName() == "boxMulti" && f2.getName() == "circulo" || f1.getName() == "circulo" && f2.getName() == "boxMulti") && !tres && !power1) {
