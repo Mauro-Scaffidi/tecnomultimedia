@@ -9,7 +9,7 @@ class Pelota extends FCircle{
     
     
     setPosition( x,y );
-    setFill(255,0,0);
+    setFill(255,0);
     setRestitution(1.1);
     setDensity(13);
     //setBullet(true);

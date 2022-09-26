@@ -32,6 +32,9 @@ boolean goal = false;
 int tiempoGol = 120;
 boolean tiempoGola = false;
 boolean enFestejo = false;
+boolean comenzar= false;
+boolean reiniciarRojo= false;
+boolean reiniciarAzul= false;
 int gol, gol1;
 PImage pelota, festejo, menu, rojo, azul, multiplicador, defensas, pelotainv;
 PFont fuente;
@@ -146,6 +149,24 @@ void setup() {
   //mundo.add( pow1 );
 }
 
+void mouseClicked() {
+  if (mouseX > 295 && mouseX < 498 && mouseY > 343 && mouseY < 418 && estado.equals("inicio")) {
+    comenzar=true;
+  } else { 
+    comenzar=false;
+  }
+  if (mouseX > 383 && mouseX < 586 && mouseY > 471 && mouseY < 546 && estado.equals("fin 2")) {
+    reiniciarRojo=true;
+  }else{
+    reiniciarRojo=false;
+  }
+  if (mouseX > 625 && mouseX < 828 && mouseY > 480 && mouseY < 555 && estado.equals("fin 1")) {
+    reiniciarAzul=true;
+  }else{
+    reiniciarAzul=false;
+  }
+}
+
 void draw() {
 
   // -------------------------------------------------------------------------------
@@ -153,7 +174,9 @@ void draw() {
 
   if ( estado.equals("inicio") ) {
     image(menu, 0, 0);
-    if ( keyCode == ENTER ) {
+    //fill(255);
+    //rect(295, 343, 203, 75);
+    if ( comenzar == true ) {
       estado = "juego";
     }
   }
@@ -177,8 +200,8 @@ void draw() {
       hinchada.rewind();
       hinchada.play();
     }
-    
-    if(!golSound.isPlaying()){
+
+    if (!golSound.isPlaying()) {
       golSound.rewind();
     }
 
@@ -190,15 +213,15 @@ void draw() {
       int random = int(random(0, 3));
 
       if (random == 1) {
-        cuadradoBarras.setPosition(random(100, width-100), random(100, height-100));
+        cuadradoBarras.setPosition(random(150, width-100), random(100, height-100));
       } else if (random == 2) {
-        cuadradoMulti.setPosition(random(100, width-100), random(100, height-100));
+        cuadradoMulti.setPosition(random(150, width-100), random(100, height-100));
       } else {
-        cuadradoInvisible.setPosition(random(100, width-100), random(100, height-100));
+        cuadradoInvisible.setPosition(random(150, width-100), random(100, height-100));
       }
     }
 
-    println( "Fps: " + frameRate );
+    //println( "Fps: " + frameRate );
     // -------------------------------------------------------------------------------
     //Obstaculos
 
@@ -208,6 +231,7 @@ void draw() {
         poder.rewind();
         mundo.add( o );
         mundo.add( o1 );
+        mundo.remove(cuadradoBarras);
         power = false;
       }
 
@@ -231,11 +255,12 @@ void draw() {
       if ( timerObs == 0 ) {
         mundo.remove( o );
         mundo.remove( o1 );
+        mundo.add(cuadradoBarras);
         timerObs = 400;
         obs = false;
       }
     }
-    println( "timer" + timerInvi );
+    //println( "timer" + timerInvi );
 
     // -------------------------------------------------------------------------------
 
@@ -260,6 +285,7 @@ void draw() {
         pow.setRestitution(1);
         pow1.setRestitution(0.8);
         power1 = false;
+        mundo.remove(cuadradoMulti);
       }
 
       timerMultiply --;
@@ -269,6 +295,7 @@ void draw() {
         mundo.remove( pow1 );
         timerMultiply = 300;
         tres = false;
+        mundo.add(cuadradoMulti);
       }
     }
 
@@ -291,17 +318,19 @@ void draw() {
         pow1.setFill(255, 0);
         pelota = null; 
         power2 = false;
+        mundo.remove(cuadradoInvisible);
       }
 
       timerInvi --;
 
       if ( timerInvi == 0 ) {
 
-        p.setFill(255, 0, 0);
-        pow.setFill(255, 0, 0);
-        pow1.setFill(255, 0, 0);
+        p.setFill(255, 0);
+        pow.setFill(255, 0);
+        pow1.setFill(255, 0);
         timerInvi = 200;
         invisibilidad = false;
+        mundo.add(cuadradoInvisible);
         pelota=loadImage("Pelota tejo.png");
       }
     }                          
@@ -309,13 +338,13 @@ void draw() {
 
     // -------------------------------------------------------------------------------
 
-     
+
 
 
     // -------------------------------------------------------------------------------
     //ESTADO GOL && JUEGO
     p.setStatic(false);
-    
+
     //Linea mitad de cancha
     pushStyle();
     stroke(250);
@@ -347,6 +376,7 @@ void draw() {
 
     if ( tiempoGola == true ) {
       tiempoGol --;
+
       if ( tiempoGol > 0 ) {
         image(festejo, 0, 60);
         golSound.play();
@@ -384,6 +414,8 @@ void draw() {
   if ( estado.equals("fin 2") ) {
     background( 0 );
     image(rojo, 0, 0);
+    //fill(255, 50);
+    //rect(383, 471, 203, 75);
     gol = 0;
     gol1 = 0;
     p.setVelocity( 0, 0 );
@@ -393,7 +425,7 @@ void draw() {
     p2.inicializar(width-100, height/2);
     hinchada.pause();
 
-    if ( key == 'r' && estado.equals("fin 2") ) {
+    if ( reiniciarRojo==true && estado.equals("fin 2") ) {
       estado = "inicio";
       tiempoGol = 50;
       tiempoGola = false;
@@ -402,10 +434,12 @@ void draw() {
       arbitro.rewind();
     }
   }
-  
-    if ( estado.equals("fin 1") ) {
+
+  if ( estado.equals("fin 1") ) {
     background( 0 );
     image(azul, 0, 0);
+    //fill(255, 50);
+    //rect(625, 480, 203, 75);
     gol = 0;
     gol1 = 0;
     p.setVelocity( 0, 0 );
@@ -415,7 +449,7 @@ void draw() {
     p2.inicializar(width-100, height/2);
     hinchada.pause();
 
-    if ( key == 'r' && estado.equals("fin 1") ) {
+    if ( reiniciarAzul==true && estado.equals("fin 1") ) {
       estado = "inicio";
       tiempoGol = 50;
       tiempoGola = false;
@@ -447,7 +481,6 @@ void contactStarted( FContact c) {
   if ((f1.getName() == "boxBarras" && f2.getName() == "circulo" || f1.getName() == "circulo" && f2.getName() == "boxBarras" || f1.getName() == "boxBarras" && f2.getName() == "circulo" || f1.getName() == "circulo" && f2.getName() == "boxBarras") && !obs && !power) {
     obs = true;
     power = true;
-    
   }
 
   if ((f1.getName() == "boxMulti" && f2.getName() == "circulo" || f1.getName() == "circulo" && f2.getName() == "boxMulti" || f1.getName() == "boxMulti" && f2.getName() == "circulo" || f1.getName() == "circulo" && f2.getName() == "boxMulti") && !tres && !power1) {
@@ -492,15 +525,13 @@ void contactStarted( FContact c) {
     obs = false;
   } 
 
-  if ( gol == 3 || gol1 == 3 ) {
+  if ( gol == 3 ) {
     estado = "fin 1";
   }
-  
-   if ( gol1 == 3 ) {
+
+  if ( gol1 == 3 ) {
     estado = "fin 2";
   }
-  
-  
 }
 
 void keyPressed() {
